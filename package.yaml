@@ -1,0 +1,63 @@
+name: grisette-generics
+version: 0.1.0.0
+synopsis: Extension to Grisette for unifying the interface for symbolic and concrete types.
+category: Formal Methods, Theorem Provers, Symbolic Computation, SMT
+author: "Sirui Lu, Rastislav Bodík"
+maintainer: Sirui Lu (siruilu@cs.washington.edu)
+license: BSD3
+license-file: LICENSE
+github: lsrcz/grisette-generics
+copyright: "2024 Sirui Lu"
+extra-source-files:
+  - CHANGELOG.md
+  - README.md
+tested-with:
+  - GHC == 9.2.8
+  - GHC == 9.4.8
+  - GHC == 9.6.3
+  - GHC == 9.8.1
+
+dependencies:
+  - base >= 4.14 && < 5
+  - grisette >= 0.4.1.0 && < 0.5
+
+ghc-options:
+  - -Wextra
+  - -Wcompat
+  - -Widentities
+  - -Wincomplete-record-updates
+  - -Wmissing-export-lists
+  - -Wmissing-home-modules
+  - -Wmissing-import-lists
+  - -Wpartial-fields
+  - -Wunused-type-patterns
+
+library:
+  source-dirs: src
+
+# tests:
+#   spec:
+#     main: Main.hs
+#     source-dirs: test
+#     dependencies:
+#       - grisette
+#       - test-framework >= 0.8.2 && < 0.9
+#       - test-framework-hunit >= 0.3.0.2 && < 0.4
+#       - test-framework-quickcheck2 >= 0.3.0.5 && < 0.4
+#       - HUnit >= 1.6 && < 1.7
+#     ghc-options:
+#       - -threaded
+#       - -rtsopts
+#       - -with-rtsopts=-N
+#   doctest:
+#     main: Main.hs
+#     source-dirs: doctest
+#     dependencies:
+#       - grisette
+#       - doctest >= 0.18.2 && < 0.23
+#       - Glob
+#     ghc-options:
+#       - -threaded
+#       - -rtsopts
+#       - -with-rtsopts=-N
+# 

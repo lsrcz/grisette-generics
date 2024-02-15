@@ -1,0 +1,43 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.36.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           grisette-generics
+version:        0.1.0.0
+synopsis:       Extension to Grisette for unifying the interface for symbolic and concrete types.
+category:       Formal Methods, Theorem Provers, Symbolic Computation, SMT
+homepage:       https://github.com/lsrcz/grisette-generics#readme
+bug-reports:    https://github.com/lsrcz/grisette-generics/issues
+author:         Sirui Lu, Rastislav Bodík
+maintainer:     Sirui Lu (siruilu@cs.washington.edu)
+copyright:      2024 Sirui Lu
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+tested-with:
+    GHC == 9.2.8
+  , GHC == 9.4.8
+  , GHC == 9.6.3
+  , GHC == 9.8.1
+extra-source-files:
+    CHANGELOG.md
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/lsrcz/grisette-generics
+
+library
+  exposed-modules:
+      Grisette.Generics.Class.ITEOp
+  other-modules:
+      Paths_grisette_generics
+  hs-source-dirs:
+      src
+  ghc-options: -Wextra -Wcompat -Widentities -Wincomplete-record-updates -Wmissing-export-lists -Wmissing-home-modules -Wmissing-import-lists -Wpartial-fields -Wunused-type-patterns
+  build-depends:
+      base >=4.14 && <5
+    , grisette >=0.4.1.0 && <0.5
+  default-language: Haskell2010
