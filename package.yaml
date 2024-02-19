@@ -20,9 +20,9 @@ tested-with:
 dependencies:
   - base >= 4.16 && < 5
   - grisette >= 0.4.1.0 && < 0.5
-  - deepseq
-  - template-haskell
-  - mtl
+  - deepseq >= 1.4.4 && < 1.6
+  - template-haskell >= 2.18.0 && < 2.22
+  - mtl >= 2.2.2 && < 2.4
 
 ghc-options:
   - -Wextra
