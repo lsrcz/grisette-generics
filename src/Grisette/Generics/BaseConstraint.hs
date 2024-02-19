@@ -2,8 +2,7 @@
 
 module Grisette.Generics.BaseConstraint
   ( BasicGrisetteType,
-    -- PrimitiveType,
-    PrimitiveConversion,
+    ConSymConversion,
   )
 where
 
@@ -37,12 +36,7 @@ type BasicGrisetteType bool t =
     ITEOp bool t
   )
 
--- type PrimitiveType bool t =
---   ( BasicGrisetteType bool t,
---     SimpleMergeable bool t
---   )
-
-type PrimitiveConversion conType symType bool t =
+type ConSymConversion conType symType bool t =
   ( ToCon t conType,
     ToSym conType t,
     ToCon symType t,

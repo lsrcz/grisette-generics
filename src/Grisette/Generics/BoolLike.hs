@@ -9,13 +9,13 @@ import Grisette
   )
 import Grisette.Generics.BaseConstraint
   ( BasicGrisetteType,
-    PrimitiveConversion,
+    ConSymConversion,
   )
 import Grisette.Generics.Class.SimpleMergeable (SimpleMergeable)
 
 type BoolLike bool =
   ( BasicGrisetteType bool bool,
-    PrimitiveConversion Bool SymBool bool bool,
+    ConSymConversion Bool SymBool bool bool,
     SimpleMergeable bool bool,
     LogicalOp bool
   )

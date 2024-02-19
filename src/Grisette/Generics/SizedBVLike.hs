@@ -14,8 +14,8 @@ module Grisette.Generics.SizedBVLike
     SafeIntNLike,
     WordNLike,
     SafeWordNLike,
-    IntNWordNLikePair,
-    SafeIntNWordNLikePair,
+    WordNIntNLikePair,
+    SafeWordNIntNLikePair,
   )
 where
 
@@ -32,7 +32,7 @@ import Grisette
     Mergeable,
     SafeDivision,
     SafeLinearArith,
-    SignConversion ,
+    SignConversion,
     SizedBV,
     SubstituteSym,
     SymIntN,
@@ -115,16 +115,16 @@ type SafeWordNLike bool bv m =
   ) ::
     Constraint
 
-type IntNWordNLikePair bool int word =
+type WordNIntNLikePair bool word int =
   ( IntNLike bool int,
     WordNLike bool word,
     forall n. (KnownNat n, 1 <= n) => SignConversion (word n) (int n)
   ) ::
     Constraint
 
-type SafeIntNWordNLikePair bool int word m =
+type SafeWordNIntNLikePair bool word int m =
   ( SafeIntNLike bool int m,
     SafeWordNLike bool word m,
-    IntNWordNLikePair bool int word
+    WordNIntNLikePair bool word int
   ) ::
     Constraint

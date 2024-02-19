@@ -35,7 +35,7 @@ import Grisette.Core.Data.Class.SymRotate (SymRotate)
 import Grisette.Core.Data.Class.SymShift (SymShift)
 import Grisette.Core.Data.SomeBV (SomeSymWordN, SomeWordN)
 import Grisette.Generics.BaseConstraint
-  ( PrimitiveConversion,
+  ( ConSymConversion,
   )
 import Grisette.Generics.IntegralLike (NumLike, SafeIntegralLike)
 
@@ -48,10 +48,10 @@ type BVLike bool bv =
   ) ::
     Constraint
 
-type BVPair bool unsigned signed =
-  ( BVLike bool unsigned,
-    BVLike bool signed,
-    SignConversion unsigned signed
+type BVPair bool word int =
+  ( BVLike bool word,
+    BVLike bool int,
+    SignConversion word int
   )
 
 type SafeBVLike e bool bv m =
@@ -80,7 +80,7 @@ type SafeSomeBVLike bool bv m =
 
 type SomeIntNLike bool bv =
   ( SomeBVLike bool bv,
-    PrimitiveConversion SomeIntN SomeSymIntN bool bv
+    ConSymConversion SomeIntN SomeSymIntN bool bv
   )
 
 type SafeSomeIntNLike bool bv m =
@@ -90,7 +90,7 @@ type SafeSomeIntNLike bool bv m =
 
 type SomeWordNLike bool bv =
   ( SomeBVLike bool bv,
-    PrimitiveConversion SomeWordN SomeSymWordN bool bv
+    ConSymConversion SomeWordN SomeSymWordN bool bv
   )
 
 type SafeSomeWordNLike bool bv m =
@@ -98,14 +98,14 @@ type SafeSomeWordNLike bool bv m =
     SomeWordNLike bool bv
   )
 
-type SomeIntNSomeWordNLikePair bool signed unsigned =
-  ( SomeIntNLike bool signed,
-    SomeWordNLike bool unsigned,
-    SignConversion unsigned signed
+type SomeIntNSomeWordNLikePair bool word int =
+  ( SomeIntNLike bool int,
+    SomeWordNLike bool word,
+    SignConversion word int
   )
 
-type SafeSomeIntNSomeWordNLikePair bool signed unsigned m =
-  ( SafeSomeIntNLike bool signed m,
-    SafeSomeWordNLike bool unsigned m,
-    SomeIntNSomeWordNLikePair bool signed unsigned
+type SafeSomeIntNSomeWordNLikePair bool word int m =
+  ( SafeSomeWordNLike bool word m,
+    SafeSomeIntNLike bool int m,
+    SomeIntNSomeWordNLikePair bool word int
   )
