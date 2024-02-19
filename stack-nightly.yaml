@@ -43,7 +43,7 @@ packages:
 # flags: {}
 extra-deps:
 - git: https://github.com/lsrcz/grisette.git
-  commit: e82c2d0f0c68ac5aa1abb3405a5dbc070edc9bfb
+  commit: c59feba1e90a71c04a2664ea0a1a1023d8d3f0bb
 
 # Extra package databases containing global packages
 # extra-package-dbs: []

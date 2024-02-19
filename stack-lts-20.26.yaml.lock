@@ -5,15 +5,15 @@
 
 packages:
 - completed:
-    commit: e82c2d0f0c68ac5aa1abb3405a5dbc070edc9bfb
+    commit: c59feba1e90a71c04a2664ea0a1a1023d8d3f0bb
     git: https://github.com/lsrcz/grisette.git
     name: grisette
     pantry-tree:
-      sha256: 9210a6e344ba67b52a372baaec77f41487121b922701ea571f813255a44e64d8
+      sha256: 5d0a46b35b1e70ba33fb8c2ce072bb0b599c193edcddc058c80f424d5841219d
       size: 14785
-    version: 0.4.1.0
+    version: 0.5.0.0
   original:
-    commit: e82c2d0f0c68ac5aa1abb3405a5dbc070edc9bfb
+    commit: c59feba1e90a71c04a2664ea0a1a1023d8d3f0bb
     git: https://github.com/lsrcz/grisette.git
 snapshots:
 - completed:
