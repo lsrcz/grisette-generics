@@ -7,6 +7,7 @@ module Grisette.Generics.BaseConstraint
 where
 
 import Control.DeepSeq (NFData)
+import Data.Hashable (Hashable)
 import Grisette
   ( EvaluateSym,
     ExtractSymbolics,
@@ -26,6 +27,7 @@ type BasicGrisetteType bool t =
     Eq t,
     NFData t,
     Lift t,
+    Hashable t,
     EvaluateSym t,
     ExtractSymbolics t,
     SubstituteSym t,

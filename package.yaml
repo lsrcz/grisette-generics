@@ -23,6 +23,7 @@ dependencies:
   - deepseq >= 1.4.4 && < 1.6
   - template-haskell >= 2.18.0 && < 2.22
   - mtl >= 2.2.2 && < 2.4
+  - hashable >= 1.2.3 && < 1.5
 
 ghc-options:
   - -Wextra
