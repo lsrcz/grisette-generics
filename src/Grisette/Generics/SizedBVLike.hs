@@ -35,6 +35,7 @@ import Grisette
     SafeLinearArith,
     SignConversion,
     SizedBV,
+    SomeBV,
     SubstituteSym,
     SymIntN,
     SymWordN,
@@ -46,6 +47,13 @@ import Grisette.Core.Data.Class.SafeSymRotate (SafeSymRotate)
 import Grisette.Core.Data.Class.SafeSymShift (SafeSymShift)
 import Grisette.Core.Data.Class.SymRotate (SymRotate)
 import Grisette.Core.Data.Class.SymShift (SymShift)
+import Grisette.Generics.BVLike
+  ( SomeBVLike,
+    SomeIntNLike,
+    SomeIntNSomeWordNLikePair,
+    SomeWordNLike,
+  )
+import Grisette.Generics.BoolLike (BoolLike)
 import Grisette.Generics.Class.ITEOp (ITEOp)
 import Grisette.Generics.Class.MonadBranching (MonadBranching)
 import Grisette.Generics.Class.SEq (SEq)
@@ -54,7 +62,8 @@ import Grisette.Generics.Class.SimpleMergeable (SimpleMergeable)
 import Language.Haskell.TH.Syntax (Lift)
 
 type SizedBVLike bool bv =
-  ( forall n. (KnownNat n, 1 <= n) => Show (bv n),
+  ( BoolLike bool,
+    forall n. (KnownNat n, 1 <= n) => Show (bv n),
     forall n. (KnownNat n, 1 <= n) => Eq (bv n),
     forall n. (KnownNat n, 1 <= n) => NFData (bv n),
     forall n. (KnownNat n, 1 <= n) => Lift (bv n),
@@ -72,7 +81,8 @@ type SizedBVLike bool bv =
     forall n. (KnownNat n, 1 <= n) => FiniteBits (bv n),
     forall n. (KnownNat n, 1 <= n) => SymShift (bv n),
     forall n. (KnownNat n, 1 <= n) => SymRotate (bv n),
-    SizedBV bv
+    SizedBV bv,
+    SomeBVLike bool (SomeBV bv)
   ) ::
     Constraint
 
@@ -91,7 +101,8 @@ type IntNLike bool bv =
     forall n. (KnownNat n, 1 <= n) => ToCon (SymIntN n) (bv n),
     forall n. (KnownNat n, 1 <= n) => ToCon (bv n) (IntN n),
     forall n. (KnownNat n, 1 <= n) => ToSym (bv n) (SymIntN n),
-    forall n. (KnownNat n, 1 <= n) => ToSym (IntN n) (bv n)
+    forall n. (KnownNat n, 1 <= n) => ToSym (IntN n) (bv n),
+    SomeIntNLike bool (SomeBV bv)
   ) ::
     Constraint
 
@@ -106,7 +117,8 @@ type WordNLike bool bv =
     forall n. (KnownNat n, 1 <= n) => ToCon (SymWordN n) (bv n),
     forall n. (KnownNat n, 1 <= n) => ToCon (bv n) (WordN n),
     forall n. (KnownNat n, 1 <= n) => ToSym (bv n) (SymWordN n),
-    forall n. (KnownNat n, 1 <= n) => ToSym (WordN n) (bv n)
+    forall n. (KnownNat n, 1 <= n) => ToSym (WordN n) (bv n),
+    SomeWordNLike bool (SomeBV bv)
   ) ::
     Constraint
 
@@ -119,7 +131,8 @@ type SafeWordNLike bool bv m =
 type WordNIntNLikePair bool word int =
   ( IntNLike bool int,
     WordNLike bool word,
-    forall n. (KnownNat n, 1 <= n) => SignConversion (word n) (int n)
+    forall n. (KnownNat n, 1 <= n) => SignConversion (word n) (int n),
+    SomeIntNSomeWordNLikePair bool (SomeBV word) (SomeBV int)
   ) ::
     Constraint
 
