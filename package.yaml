@@ -18,8 +18,11 @@ tested-with:
   - GHC == 9.8.1
 
 dependencies:
-  - base >= 4.14 && < 5
+  - base >= 4.16 && < 5
   - grisette >= 0.4.1.0 && < 0.5
+  - deepseq
+  - template-haskell
+  - mtl
 
 ghc-options:
   - -Wextra

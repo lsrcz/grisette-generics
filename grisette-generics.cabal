@@ -31,13 +31,26 @@ source-repository head
 
 library
   exposed-modules:
+      Grisette.Generics.BaseConstraint
+      Grisette.Generics.BoolLike
+      Grisette.Generics.BVLike
       Grisette.Generics.Class.ITEOp
+      Grisette.Generics.Class.MonadBranching
+      Grisette.Generics.Class.SEq
+      Grisette.Generics.Class.SimpleMergeable
+      Grisette.Generics.Class.SOrd
+      Grisette.Generics.IntegerLike
+      Grisette.Generics.IntegralLike
+      Grisette.Generics.SizedBVLike
   other-modules:
       Paths_grisette_generics
   hs-source-dirs:
       src
   ghc-options: -Wextra -Wcompat -Widentities -Wincomplete-record-updates -Wmissing-export-lists -Wmissing-home-modules -Wmissing-import-lists -Wpartial-fields -Wunused-type-patterns
   build-depends:
-      base >=4.14 && <5
+      base >=4.16 && <5
+    , deepseq
     , grisette >=0.4.1.0 && <0.5
+    , mtl
+    , template-haskell
   default-language: Haskell2010
