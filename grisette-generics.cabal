@@ -48,12 +48,12 @@ library
       src
   ghc-options: -Wextra -Wcompat -Widentities -Wincomplete-record-updates -Wmissing-export-lists -Wmissing-home-modules -Wmissing-import-lists -Wpartial-fields -Wunused-type-patterns
   build-depends:
-      base >=4.16 && <5
+      base >=4.14 && <5
     , deepseq >=1.4.4 && <1.6
     , grisette >=0.4.1.0 && <0.5
     , hashable >=1.2.3 && <1.5
     , mtl >=2.2.2 && <2.4
-    , template-haskell >=2.18.0 && <2.22
+    , template-haskell >=2.16.0 && <2.22
   default-language: Haskell2010
 
 test-suite spec
@@ -65,11 +65,11 @@ test-suite spec
       test
   ghc-options: -Wextra -Wcompat -Widentities -Wincomplete-record-updates -Wmissing-export-lists -Wmissing-home-modules -Wmissing-import-lists -Wpartial-fields -Wunused-type-patterns
   build-depends:
-      base >=4.16 && <5
+      base >=4.14 && <5
     , deepseq >=1.4.4 && <1.6
     , grisette
     , grisette-generics
     , hashable >=1.2.3 && <1.5
     , mtl >=2.2.2 && <2.4
-    , template-haskell >=2.18.0 && <2.22
+    , template-haskell >=2.16.0 && <2.22
   default-language: Haskell2010
