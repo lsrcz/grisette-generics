@@ -7,6 +7,7 @@ module Grisette.Generics.IntegralLike
   )
 where
 
+import Control.Monad.Except (ExceptT)
 import Grisette.Core.Data.Class.SafeDivision (SafeDivision)
 import Grisette.Core.Data.Class.SafeLinearArith (SafeLinearArith)
 import Grisette.Generics.BaseConstraint (BasicGrisetteType)
@@ -22,6 +23,6 @@ type NumLike bool int =
 type SafeIntegralLike e bool int m =
   ( NumLike bool int,
     MonadBranching bool m,
-    SafeDivision e int m,
-    SafeLinearArith e int m
+    SafeDivision e int (ExceptT e m),
+    SafeLinearArith e int (ExceptT e m)
   )

@@ -20,6 +20,7 @@ module Grisette.Generics.BVLike
 where
 
 import Control.Exception (ArithException)
+import Control.Monad.Except (ExceptT)
 import Data.Bits (Bits, FiniteBits)
 import Data.Kind (Constraint)
 import Grisette
@@ -57,8 +58,8 @@ type BVPair bool word int =
 type SafeBVLike e bool bv m =
   ( BVLike bool bv,
     SafeIntegralLike e bool bv m,
-    SafeSymShift e bv m,
-    SafeSymRotate e bv m
+    SafeSymShift e bv (ExceptT e m),
+    SafeSymRotate e bv (ExceptT e m)
   ) ::
     Constraint
 

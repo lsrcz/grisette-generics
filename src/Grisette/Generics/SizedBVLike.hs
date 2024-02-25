@@ -22,6 +22,7 @@ where
 
 import Control.DeepSeq (NFData)
 import Control.Exception (ArithException)
+import Control.Monad.Except (ExceptT)
 import Data.Bits (Bits, FiniteBits)
 import Data.Kind (Constraint)
 import GHC.TypeLits (KnownNat, type (<=))
@@ -48,7 +49,9 @@ import Grisette.Core.Data.Class.SafeSymShift (SafeSymShift)
 import Grisette.Core.Data.Class.SymRotate (SymRotate)
 import Grisette.Core.Data.Class.SymShift (SymShift)
 import Grisette.Generics.BVLike
-  ( SomeBVLike,
+  ( SafeSomeIntNLike,
+    SafeSomeWordNLike,
+    SomeBVLike,
     SomeIntNLike,
     SomeIntNSomeWordNLikePair,
     SomeWordNLike,
@@ -89,10 +92,18 @@ type SizedBVLike bool bv =
 type SafeSizedBVLike bool bv m =
   ( SizedBVLike bool bv,
     MonadBranching bool m,
-    forall n. (KnownNat n, 1 <= n) => SafeDivision ArithException (bv n) m,
-    forall n. (KnownNat n, 1 <= n) => SafeLinearArith ArithException (bv n) m,
-    forall n. (KnownNat n, 1 <= n) => SafeSymShift ArithException (bv n) m,
-    forall n. (KnownNat n, 1 <= n) => SafeSymRotate ArithException (bv n) m
+    forall n.
+    (KnownNat n, 1 <= n) =>
+    SafeDivision ArithException (bv n) (ExceptT ArithException m),
+    forall n.
+    (KnownNat n, 1 <= n) =>
+    SafeLinearArith ArithException (bv n) (ExceptT ArithException m),
+    forall n.
+    (KnownNat n, 1 <= n) =>
+    SafeSymShift ArithException (bv n) (ExceptT ArithException m),
+    forall n.
+    (KnownNat n, 1 <= n) =>
+    SafeSymRotate ArithException (bv n) (ExceptT ArithException m)
   ) ::
     Constraint
 
@@ -108,6 +119,7 @@ type IntNLike bool bv =
 
 type SafeIntNLike bool bv m =
   ( IntNLike bool bv,
+    SafeSomeIntNLike bool (SomeBV bv) m,
     SafeSizedBVLike bool bv m
   ) ::
     Constraint
@@ -124,6 +136,7 @@ type WordNLike bool bv =
 
 type SafeWordNLike bool bv m =
   ( WordNLike bool bv,
+    SafeSomeWordNLike bool (SomeBV bv) m,
     SafeSizedBVLike bool bv m
   ) ::
     Constraint

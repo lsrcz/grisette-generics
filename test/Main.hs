@@ -9,7 +9,7 @@
 module Main (main) where
 
 import Control.Exception (ArithException)
-import Control.Monad.Except (ExceptT)
+import Control.Monad.Identity (Identity)
 import Grisette
   ( IntN,
     SomeIntN,
@@ -98,15 +98,11 @@ sizedBVConstraints = ()
 
 sizedIntNWordNConstraintsInstantiate :: ()
 sizedIntNWordNConstraintsInstantiate =
-  sizedBVConstraints @Bool @WordN @IntN @(Either ArithException)
+  sizedBVConstraints @Bool @WordN @IntN @Identity
 
 sizedSymIntNSymWordNConstraintsInstantiate :: ()
 sizedSymIntNSymWordNConstraintsInstantiate =
-  sizedBVConstraints
-    @SymBool
-    @SymWordN
-    @SymIntN
-    @(ExceptT ArithException UnionM)
+  sizedBVConstraints @SymBool @SymWordN @SymIntN @UnionM
 
 someBVConstraints ::
   forall bool word int m.
@@ -140,16 +136,11 @@ someBVConstraints = ()
 
 someIntNWordNConstraintsInstantiate :: ()
 someIntNWordNConstraintsInstantiate =
-  someBVConstraints @Bool @SomeWordN @SomeIntN
-    @(Either (Either BitwidthMismatch ArithException))
+  someBVConstraints @Bool @SomeWordN @SomeIntN @Identity
 
 someSymIntNSymWordNConstraintsInstantiate :: ()
 someSymIntNSymWordNConstraintsInstantiate =
-  someBVConstraints
-    @SymBool
-    @SomeSymWordN
-    @SomeSymIntN
-    @(ExceptT (Either BitwidthMismatch ArithException) UnionM)
+  someBVConstraints @SymBool @SomeSymWordN @SomeSymIntN @UnionM
 
 integerConstraints ::
   forall bool integer m.
@@ -165,11 +156,11 @@ integerConstraints = ()
 
 integerConstraintsInstantiate :: ()
 integerConstraintsInstantiate =
-  integerConstraints @Bool @Integer @(Either ArithException)
+  integerConstraints @Bool @Integer @Identity
 
 symIntegerConstraintsInstantiate :: ()
 symIntegerConstraintsInstantiate =
-  integerConstraints @SymBool @SymInteger @(ExceptT ArithException UnionM)
+  integerConstraints @SymBool @SymInteger @UnionM
 
 -- We just test whether the code compiles for now to ensure that we don't
 -- accidentally add imcompatible constraints to the types.
