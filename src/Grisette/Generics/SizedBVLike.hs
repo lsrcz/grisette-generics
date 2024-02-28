@@ -49,7 +49,8 @@ import Grisette.Core.Data.Class.SafeSymShift (SafeSymShift)
 import Grisette.Core.Data.Class.SymRotate (SymRotate)
 import Grisette.Core.Data.Class.SymShift (SymShift)
 import Grisette.Generics.BVLike
-  ( SafeSomeIntNLike,
+  ( SafeSomeBVLike,
+    SafeSomeIntNLike,
     SafeSomeWordNLike,
     SomeBVLike,
     SomeIntNLike,
@@ -103,7 +104,8 @@ type SafeSizedBVLike bool bv m =
     SafeSymShift ArithException (bv n) (ExceptT ArithException m),
     forall n.
     (KnownNat n, 1 <= n) =>
-    SafeSymRotate ArithException (bv n) (ExceptT ArithException m)
+    SafeSymRotate ArithException (bv n) (ExceptT ArithException m),
+    SafeSomeBVLike bool (SomeBV bv) m
   ) ::
     Constraint
 
