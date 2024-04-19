@@ -42,7 +42,7 @@ packages:
 # Override default flag values for local packages and extra-deps
 # flags: {}
 extra-deps:
-- grisette-0.5.0.0
+- grisette-0.5.0.1
 
 # Extra package databases containing global packages
 # extra-package-dbs: []
