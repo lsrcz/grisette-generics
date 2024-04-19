@@ -25,16 +25,17 @@ import Data.Bits (Bits, FiniteBits)
 import Data.Kind (Constraint)
 import Grisette
   ( BV,
+    BitwidthMismatch,
+    SafeSymRotate,
+    SafeSymShift,
     SignConversion,
     SomeIntN,
     SomeSymIntN,
+    SomeSymWordN,
+    SomeWordN,
+    SymRotate,
+    SymShift,
   )
-import Grisette.Core.Data.BV (BitwidthMismatch)
-import Grisette.Core.Data.Class.SafeSymRotate (SafeSymRotate)
-import Grisette.Core.Data.Class.SafeSymShift (SafeSymShift)
-import Grisette.Core.Data.Class.SymRotate (SymRotate)
-import Grisette.Core.Data.Class.SymShift (SymShift)
-import Grisette.Core.Data.SomeBV (SomeSymWordN, SomeWordN)
 import Grisette.Generics.BaseConstraint
   ( ConSymConversion,
   )

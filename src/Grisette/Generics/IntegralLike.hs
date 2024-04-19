@@ -8,8 +8,7 @@ module Grisette.Generics.IntegralLike
 where
 
 import Control.Monad.Except (ExceptT)
-import Grisette.Core.Data.Class.SafeDivision (SafeDivision)
-import Grisette.Core.Data.Class.SafeLinearArith (SafeLinearArith)
+import Grisette (SafeDivision, SafeLinearArith)
 import Grisette.Generics.BaseConstraint (BasicGrisetteType)
 import Grisette.Generics.BoolLike (BoolLike)
 import Grisette.Generics.Class.MonadBranching (MonadBranching)

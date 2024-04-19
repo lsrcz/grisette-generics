@@ -11,7 +11,8 @@ module Main (main) where
 import Control.Exception (ArithException)
 import Control.Monad.Identity (Identity)
 import Grisette
-  ( IntN,
+  ( BitwidthMismatch,
+    IntN,
     SomeIntN,
     SomeSymIntN,
     SomeSymWordN,
@@ -23,7 +24,6 @@ import Grisette
     UnionM,
     WordN,
   )
-import Grisette.Core.Data.BV (BitwidthMismatch)
 import Grisette.Generics.BVLike
   ( BVLike,
     BVPair,

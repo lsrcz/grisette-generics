@@ -9,10 +9,10 @@ module Grisette.Generics.IntegerLike
 where
 
 import Control.Exception (ArithException)
+import Grisette (SymInteger)
 import Grisette.Generics.BaseConstraint (ConSymConversion)
 import Grisette.Generics.Class.SimpleMergeable (SimpleMergeable)
 import Grisette.Generics.IntegralLike (NumLike, SafeIntegralLike)
-import Grisette.IR.SymPrim (SymInteger)
 
 type IntegerLike bool int =
   ( NumLike bool int,

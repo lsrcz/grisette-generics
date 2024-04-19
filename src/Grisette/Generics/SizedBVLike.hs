@@ -34,20 +34,20 @@ import Grisette
     Mergeable,
     SafeDivision,
     SafeLinearArith,
+    SafeSymRotate,
+    SafeSymShift,
     SignConversion,
     SizedBV,
     SomeBV,
     SubstituteSym,
     SymIntN,
+    SymRotate,
+    SymShift,
     SymWordN,
     ToCon,
     ToSym,
     WordN,
   )
-import Grisette.Core.Data.Class.SafeSymRotate (SafeSymRotate)
-import Grisette.Core.Data.Class.SafeSymShift (SafeSymShift)
-import Grisette.Core.Data.Class.SymRotate (SymRotate)
-import Grisette.Core.Data.Class.SymShift (SymShift)
 import Grisette.Generics.BVLike
   ( SafeSomeBVLike,
     SafeSomeIntNLike,
