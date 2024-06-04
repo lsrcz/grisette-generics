@@ -41,6 +41,7 @@ library
       Grisette.Generics.Class.SOrd
       Grisette.Generics.IntegerLike
       Grisette.Generics.IntegralLike
+      Grisette.Generics.Lib.Data.Foldable
       Grisette.Generics.SizedBVLike
   other-modules:
       Paths_grisette_generics
