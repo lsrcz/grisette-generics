@@ -1,7 +1,11 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 module Grisette.Unified.BVLike
   ( BVLike,
@@ -14,8 +18,10 @@ module Grisette.Unified.BVLike
     SafeSomeIntNLike,
     SomeWordNLike,
     SafeSomeWordNLike,
-    SomeIntNSomeWordNLikePair,
-    SafeSomeIntNSomeWordNLikePair,
+    SomeWordNSomeIntNLikePair,
+    SafeSomeWordNSomeIntNLikePair,
+    UnifySomeWordNSomeIntN (..),
+    SafeUnifySomeWordNSomeIntN,
   )
 where
 
@@ -33,6 +39,7 @@ import Grisette
     SomeSymIntN,
     SomeSymWordN,
     SomeWordN,
+    SymBool,
     SymRotate,
     SymShift,
   )
@@ -100,14 +107,44 @@ type SafeSomeWordNLike bool bv m =
     SomeWordNLike bool bv
   )
 
-type SomeIntNSomeWordNLikePair bool word int =
+type SomeWordNSomeIntNLikePair bool word int =
   ( SomeIntNLike bool int,
     SomeWordNLike bool word,
     SignConversion word int
   )
 
-type SafeSomeIntNSomeWordNLikePair bool word int m =
+type SafeSomeWordNSomeIntNLikePair bool word int m =
   ( SafeSomeWordNLike bool word m,
     SafeSomeIntNLike bool int m,
-    SomeIntNSomeWordNLikePair bool word int
+    SomeWordNSomeIntNLikePair bool word int
   )
+
+class
+  ( SomeWordNSomeIntNLikePair bool word int,
+    word ~ SomeUniWordN bool,
+    int ~ SomeUniIntN bool
+  ) =>
+  UnifySomeWordNSomeIntN bool word int
+  where
+  type SomeUniWordN bool
+  type SomeUniIntN bool
+
+instance UnifySomeWordNSomeIntN Bool SomeWordN SomeIntN where
+  type SomeUniWordN Bool = SomeWordN
+  type SomeUniIntN Bool = SomeIntN
+
+instance UnifySomeWordNSomeIntN SymBool SomeSymWordN SomeSymIntN where
+  type SomeUniWordN SymBool = SomeSymWordN
+  type SomeUniIntN SymBool = SomeSymIntN
+
+class
+  ( SafeSomeWordNSomeIntNLikePair bool wordn intn m,
+    UnifySomeWordNSomeIntN bool wordn intn
+  ) =>
+  SafeUnifySomeWordNSomeIntN bool wordn intn m
+
+instance
+  ( SafeSomeWordNSomeIntNLikePair bool wordn intn m,
+    UnifySomeWordNSomeIntN bool wordn intn
+  ) =>
+  SafeUnifySomeWordNSomeIntN bool wordn intn m

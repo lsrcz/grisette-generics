@@ -4,7 +4,7 @@
 module Grisette.Unified.Class.SOrd (SOrd (..)) where
 
 import qualified Grisette
-import Grisette.Unified.Class.MonadBranching (MonadBranching, liftUnionM)
+import Grisette.Unified.Class.Branching (Branching, liftUnionM)
 
 class SOrd bool a where
   (.<=) :: a -> a -> bool
@@ -12,7 +12,7 @@ class SOrd bool a where
   (.>) :: a -> a -> bool
   (.<) :: a -> a -> bool
   symCompare ::
-    (MonadBranching bool ctx) => proxy bool -> a -> a -> ctx Ordering
+    (Monad ctx, Branching bool ctx) => proxy bool -> a -> a -> ctx Ordering
 
 instance (Ord a) => SOrd Bool a where
   (.<=) = (<=)

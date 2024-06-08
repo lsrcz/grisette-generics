@@ -34,8 +34,8 @@ library
       Grisette.Unified.BaseConstraint
       Grisette.Unified.BoolLike
       Grisette.Unified.BVLike
+      Grisette.Unified.Class.Branching
       Grisette.Unified.Class.ITEOp
-      Grisette.Unified.Class.MonadBranching
       Grisette.Unified.Class.SEq
       Grisette.Unified.Class.SimpleMergeable
       Grisette.Unified.Class.SOrd
@@ -61,6 +61,7 @@ test-suite spec
   type: exitcode-stdio-1.0
   main-is: Main.hs
   other-modules:
+      Unify
       Paths_grisette_unified
   hs-source-dirs:
       test

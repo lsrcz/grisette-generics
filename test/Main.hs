@@ -31,12 +31,12 @@ import Grisette.Unified.BVLike
     SafeBVPair,
     SafeSomeBVLike,
     SafeSomeIntNLike,
-    SafeSomeIntNSomeWordNLikePair,
     SafeSomeWordNLike,
+    SafeSomeWordNSomeIntNLikePair,
     SomeBVLike,
     SomeIntNLike,
-    SomeIntNSomeWordNLikePair,
     SomeWordNLike,
+    SomeWordNSomeIntNLikePair,
   )
 import Grisette.Unified.BaseConstraint (BasicGrisetteType, ConSymConversion)
 import Grisette.Unified.BoolLike (BoolLike)
@@ -51,6 +51,7 @@ import Grisette.Unified.SizedBVLike
     SizedBVLike,
     WordNLike,
   )
+import Unify (unifyTest)
 
 boolConstraints ::
   forall bool.
@@ -128,8 +129,8 @@ someBVConstraints ::
     SafeSomeIntNLike bool int m,
     SomeWordNLike bool word,
     SafeSomeWordNLike bool word m,
-    SomeIntNSomeWordNLikePair bool word int,
-    SafeSomeIntNSomeWordNLikePair bool word int m
+    SomeWordNSomeIntNLikePair bool word int,
+    SafeSomeWordNSomeIntNLikePair bool word int m
   ) =>
   ()
 someBVConstraints = ()
@@ -176,5 +177,6 @@ main =
         someIntNWordNConstraintsInstantiate,
         someSymIntNSymWordNConstraintsInstantiate,
         integerConstraintsInstantiate,
-        symIntegerConstraintsInstantiate
+        symIntegerConstraintsInstantiate,
+        unifyTest
       ]

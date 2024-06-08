@@ -1,10 +1,12 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE ImpredicativeTypes #-}
-{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE QuantifiedConstraints #-}
+{-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
 
@@ -17,6 +19,8 @@ module Grisette.Unified.SizedBVLike
     SafeWordNLike,
     WordNIntNLikePair,
     SafeWordNIntNLikePair,
+    UnifyWordNIntN (..),
+    SafeUnifyWordNIntN,
   )
 where
 
@@ -24,8 +28,8 @@ import Control.DeepSeq (NFData)
 import Control.Exception (ArithException)
 import Control.Monad.Except (ExceptT)
 import Data.Bits (Bits, FiniteBits)
-import Data.Kind (Constraint)
-import GHC.TypeLits (KnownNat, type (<=))
+import Data.Kind (Constraint, Type)
+import GHC.TypeLits (KnownNat, Nat, type (<=))
 import Grisette
   ( EvaluateSym,
     ExtractSymbolics,
@@ -40,6 +44,7 @@ import Grisette
     SizedBV,
     SomeBV,
     SubstituteSym,
+    SymBool,
     SymIntN,
     SymRotate,
     SymShift,
@@ -52,22 +57,22 @@ import Grisette.Unified.BVLike
   ( SafeSomeBVLike,
     SafeSomeIntNLike,
     SafeSomeWordNLike,
+    SafeUnifySomeWordNSomeIntN,
     SomeBVLike,
     SomeIntNLike,
-    SomeIntNSomeWordNLikePair,
     SomeWordNLike,
+    SomeWordNSomeIntNLikePair,
+    UnifySomeWordNSomeIntN,
   )
-import Grisette.Unified.BoolLike (BoolLike)
+import Grisette.Unified.Class.Branching (Branching)
 import Grisette.Unified.Class.ITEOp (ITEOp)
-import Grisette.Unified.Class.MonadBranching (MonadBranching)
 import Grisette.Unified.Class.SEq (SEq)
 import Grisette.Unified.Class.SOrd (SOrd)
 import Grisette.Unified.Class.SimpleMergeable (SimpleMergeable)
 import Language.Haskell.TH.Syntax (Lift)
 
 type SizedBVLike bool bv =
-  ( BoolLike bool,
-    forall n. (KnownNat n, 1 <= n) => Show (bv n),
+  ( forall n. (KnownNat n, 1 <= n) => Show (bv n),
     forall n. (KnownNat n, 1 <= n) => Eq (bv n),
     forall n. (KnownNat n, 1 <= n) => NFData (bv n),
     forall n. (KnownNat n, 1 <= n) => Lift (bv n),
@@ -92,7 +97,8 @@ type SizedBVLike bool bv =
 
 type SafeSizedBVLike bool bv m =
   ( SizedBVLike bool bv,
-    MonadBranching bool m,
+    Monad m,
+    Branching bool m,
     forall n.
     (KnownNat n, 1 <= n) =>
     SafeDivision ArithException (bv n) (ExceptT ArithException m),
@@ -147,7 +153,7 @@ type WordNIntNLikePair bool word int =
   ( IntNLike bool int,
     WordNLike bool word,
     forall n. (KnownNat n, 1 <= n) => SignConversion (word n) (int n),
-    SomeIntNSomeWordNLikePair bool (SomeBV word) (SomeBV int)
+    SomeWordNSomeIntNLikePair bool (SomeBV word) (SomeBV int)
   ) ::
     Constraint
 
@@ -157,3 +163,36 @@ type SafeWordNIntNLikePair bool word int m =
     WordNIntNLikePair bool word int
   ) ::
     Constraint
+
+class
+  ( WordNIntNLikePair bool wordn intn,
+    UnifySomeWordNSomeIntN bool (SomeBV wordn) (SomeBV intn),
+    wordn ~ UniWordN bool,
+    intn ~ UniIntN bool
+  ) =>
+  UnifyWordNIntN bool wordn intn
+  where
+  type UniWordN bool :: Nat -> Type
+  type UniIntN bool :: Nat -> Type
+
+instance UnifyWordNIntN Bool WordN IntN where
+  type UniWordN Bool = WordN
+  type UniIntN Bool = IntN
+
+instance UnifyWordNIntN SymBool SymWordN SymIntN where
+  type UniWordN SymBool = SymWordN
+  type UniIntN SymBool = SymIntN
+
+class
+  ( SafeWordNIntNLikePair bool wordn intn m,
+    SafeUnifySomeWordNSomeIntN bool (SomeBV wordn) (SomeBV intn) m,
+    UnifyWordNIntN bool wordn intn
+  ) =>
+  SafeUnifyWordNIntN bool wordn intn m
+
+instance
+  ( SafeWordNIntNLikePair bool wordn intn m,
+    SafeUnifySomeWordNSomeIntN bool (SomeBV wordn) (SomeBV intn) m,
+    UnifyWordNIntN bool wordn intn
+  ) =>
+  SafeUnifyWordNIntN bool wordn intn m
