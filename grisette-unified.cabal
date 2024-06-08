@@ -43,6 +43,7 @@ library
       Grisette.Unified.IntegralLike
       Grisette.Unified.Lib.Data.Foldable
       Grisette.Unified.SizedBVLike
+      Grisette.Unified.UnifiedData
   other-modules:
       Paths_grisette_unified
   hs-source-dirs:

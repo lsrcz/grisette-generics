@@ -1,11 +1,15 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE ImpredicativeTypes #-}
+{-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE MonoLocalBinds #-}
 
 module Grisette.Unified.BoolLike (BoolLike, MonadBranching) where
 
+import Data.Kind (Constraint)
 import Grisette
   ( LogicalOp,
+    Mergeable,
     SymBool,
   )
 import Grisette.Unified.BVLike
@@ -26,6 +30,7 @@ import Grisette.Unified.SizedBVLike
   ( SafeUnifyWordNIntN,
     UnifyWordNIntN (UniIntN, UniWordN),
   )
+import Grisette.Unified.UnifiedData (UnifyData1)
 
 type BoolLike bool =
   ( BasicGrisetteType bool bool,
@@ -34,7 +39,8 @@ type BoolLike bool =
     LogicalOp bool,
     UnifyInteger bool (UniInteger bool),
     UnifyWordNIntN bool (UniWordN bool) (UniIntN bool),
-    UnifySomeWordNSomeIntN bool (SomeUniWordN bool) (SomeUniIntN bool)
+    UnifySomeWordNSomeIntN bool (SomeUniWordN bool) (SomeUniIntN bool),
+    forall v. (Mergeable v) => UnifyData1 bool v :: Constraint
   )
 
 type MonadBranching bool m =
