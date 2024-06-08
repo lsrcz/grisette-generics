@@ -1,4 +1,4 @@
-name: grisette-generics
+name: grisette-unified
 version: 0.1.0.0
 synopsis: Extension to Grisette for unifying the interface for symbolic and concrete types.
 category: Formal Methods, Theorem Provers, Symbolic Computation, SMT
@@ -6,7 +6,7 @@ author: "Sirui Lu, Rastislav Bodík"
 maintainer: Sirui Lu (siruilu@cs.washington.edu)
 license: BSD3
 license-file: LICENSE
-github: lsrcz/grisette-generics
+github: lsrcz/grisette-unified
 copyright: "2024 Sirui Lu"
 extra-source-files:
   - CHANGELOG.md
@@ -45,4 +45,4 @@ tests:
     source-dirs: test
     dependencies:
       - grisette
-      - grisette-generics
+      - grisette-unified

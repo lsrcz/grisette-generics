@@ -5,7 +5,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Grisette.Generics.Class.ITEOp (ITEOp (..)) where
+module Grisette.Unified.Class.ITEOp (ITEOp (..)) where
 
 import qualified Grisette
 

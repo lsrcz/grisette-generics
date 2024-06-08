@@ -4,12 +4,12 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 
-name:           grisette-generics
+name:           grisette-unified
 version:        0.1.0.0
 synopsis:       Extension to Grisette for unifying the interface for symbolic and concrete types.
 category:       Formal Methods, Theorem Provers, Symbolic Computation, SMT
-homepage:       https://github.com/lsrcz/grisette-generics#readme
-bug-reports:    https://github.com/lsrcz/grisette-generics/issues
+homepage:       https://github.com/lsrcz/grisette-unified#readme
+bug-reports:    https://github.com/lsrcz/grisette-unified/issues
 author:         Sirui Lu, Rastislav Bodík
 maintainer:     Sirui Lu (siruilu@cs.washington.edu)
 copyright:      2024 Sirui Lu
@@ -27,24 +27,24 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/lsrcz/grisette-generics
+  location: https://github.com/lsrcz/grisette-unified
 
 library
   exposed-modules:
-      Grisette.Generics.BaseConstraint
-      Grisette.Generics.BoolLike
-      Grisette.Generics.BVLike
-      Grisette.Generics.Class.ITEOp
-      Grisette.Generics.Class.MonadBranching
-      Grisette.Generics.Class.SEq
-      Grisette.Generics.Class.SimpleMergeable
-      Grisette.Generics.Class.SOrd
-      Grisette.Generics.IntegerLike
-      Grisette.Generics.IntegralLike
-      Grisette.Generics.Lib.Data.Foldable
-      Grisette.Generics.SizedBVLike
+      Grisette.Unified.BaseConstraint
+      Grisette.Unified.BoolLike
+      Grisette.Unified.BVLike
+      Grisette.Unified.Class.ITEOp
+      Grisette.Unified.Class.MonadBranching
+      Grisette.Unified.Class.SEq
+      Grisette.Unified.Class.SimpleMergeable
+      Grisette.Unified.Class.SOrd
+      Grisette.Unified.IntegerLike
+      Grisette.Unified.IntegralLike
+      Grisette.Unified.Lib.Data.Foldable
+      Grisette.Unified.SizedBVLike
   other-modules:
-      Paths_grisette_generics
+      Paths_grisette_unified
   hs-source-dirs:
       src
   ghc-options: -Wextra -Wcompat -Widentities -Wincomplete-record-updates -Wmissing-export-lists -Wmissing-home-modules -Wmissing-import-lists -Wpartial-fields -Wunused-type-patterns
@@ -61,7 +61,7 @@ test-suite spec
   type: exitcode-stdio-1.0
   main-is: Main.hs
   other-modules:
-      Paths_grisette_generics
+      Paths_grisette_unified
   hs-source-dirs:
       test
   ghc-options: -Wextra -Wcompat -Widentities -Wincomplete-record-updates -Wmissing-export-lists -Wmissing-home-modules -Wmissing-import-lists -Wpartial-fields -Wunused-type-patterns
@@ -69,7 +69,7 @@ test-suite spec
       base >=4.14 && <5
     , deepseq >=1.4.4 && <1.6
     , grisette
-    , grisette-generics
+    , grisette-unified
     , hashable >=1.2.3 && <1.5
     , mtl >=2.2.2 && <2.4
     , template-haskell >=2.16.0 && <2.22

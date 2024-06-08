@@ -24,7 +24,7 @@ import Grisette
     UnionM,
     WordN,
   )
-import Grisette.Generics.BVLike
+import Grisette.Unified.BVLike
   ( BVLike,
     BVPair,
     SafeBVLike,
@@ -38,11 +38,11 @@ import Grisette.Generics.BVLike
     SomeIntNSomeWordNLikePair,
     SomeWordNLike,
   )
-import Grisette.Generics.BaseConstraint (BasicGrisetteType, ConSymConversion)
-import Grisette.Generics.BoolLike (BoolLike)
-import Grisette.Generics.IntegerLike (IntegerLike, SafeIntegerLike)
-import Grisette.Generics.IntegralLike (NumLike, SafeIntegralLike)
-import Grisette.Generics.SizedBVLike
+import Grisette.Unified.BaseConstraint (BasicGrisetteType, ConSymConversion)
+import Grisette.Unified.BoolLike (BoolLike)
+import Grisette.Unified.IntegerLike (IntegerLike, SafeIntegerLike)
+import Grisette.Unified.IntegralLike (NumLike, SafeIntegralLike)
+import Grisette.Unified.SizedBVLike
   ( IntNLike,
     SafeIntNLike,
     SafeSizedBVLike,

@@ -1,10 +1,10 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module Grisette.Generics.Class.SOrd (SOrd (..)) where
+module Grisette.Unified.Class.SOrd (SOrd (..)) where
 
 import qualified Grisette
-import Grisette.Generics.Class.MonadBranching (MonadBranching, liftUnionM)
+import Grisette.Unified.Class.MonadBranching (MonadBranching, liftUnionM)
 
 class SOrd bool a where
   (.<=) :: a -> a -> bool

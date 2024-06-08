@@ -2,7 +2,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE FlexibleContexts #-}
 
-module Grisette.Generics.IntegerLike
+module Grisette.Unified.IntegerLike
   ( IntegerLike,
     SafeIntegerLike,
   )
@@ -10,9 +10,9 @@ where
 
 import Control.Exception (ArithException)
 import Grisette (SymInteger)
-import Grisette.Generics.BaseConstraint (ConSymConversion)
-import Grisette.Generics.Class.SimpleMergeable (SimpleMergeable)
-import Grisette.Generics.IntegralLike (NumLike, SafeIntegralLike)
+import Grisette.Unified.BaseConstraint (ConSymConversion)
+import Grisette.Unified.Class.SimpleMergeable (SimpleMergeable)
+import Grisette.Unified.IntegralLike (NumLike, SafeIntegralLike)
 
 type IntegerLike bool int =
   ( NumLike bool int,

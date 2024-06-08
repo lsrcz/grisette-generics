@@ -4,7 +4,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE PatternSynonyms #-}
 
-module Grisette.Generics.Class.MonadBranching
+module Grisette.Unified.Class.MonadBranching
   ( MonadBranching (..),
     liftUnionM,
   )

@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module Grisette.Generics.Class.SEq (SEq (..)) where
+module Grisette.Unified.Class.SEq (SEq (..)) where
 
 import qualified Grisette
 

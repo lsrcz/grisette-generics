@@ -8,7 +8,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Grisette.Generics.SizedBVLike
+module Grisette.Unified.SizedBVLike
   ( SizedBVLike,
     SafeSizedBVLike,
     IntNLike,
@@ -48,7 +48,7 @@ import Grisette
     ToSym,
     WordN,
   )
-import Grisette.Generics.BVLike
+import Grisette.Unified.BVLike
   ( SafeSomeBVLike,
     SafeSomeIntNLike,
     SafeSomeWordNLike,
@@ -57,12 +57,12 @@ import Grisette.Generics.BVLike
     SomeIntNSomeWordNLikePair,
     SomeWordNLike,
   )
-import Grisette.Generics.BoolLike (BoolLike)
-import Grisette.Generics.Class.ITEOp (ITEOp)
-import Grisette.Generics.Class.MonadBranching (MonadBranching)
-import Grisette.Generics.Class.SEq (SEq)
-import Grisette.Generics.Class.SOrd (SOrd)
-import Grisette.Generics.Class.SimpleMergeable (SimpleMergeable)
+import Grisette.Unified.BoolLike (BoolLike)
+import Grisette.Unified.Class.ITEOp (ITEOp)
+import Grisette.Unified.Class.MonadBranching (MonadBranching)
+import Grisette.Unified.Class.SEq (SEq)
+import Grisette.Unified.Class.SOrd (SOrd)
+import Grisette.Unified.Class.SimpleMergeable (SimpleMergeable)
 import Language.Haskell.TH.Syntax (Lift)
 
 type SizedBVLike bool bv =

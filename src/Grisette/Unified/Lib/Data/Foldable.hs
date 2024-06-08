@@ -1,6 +1,6 @@
 {-# LANGUAGE FlexibleContexts #-}
 
-module Grisette.Generics.Lib.Data.Foldable
+module Grisette.Unified.Lib.Data.Foldable
   ( symAnd,
     symOr,
     symAny,
@@ -12,8 +12,8 @@ where
 
 import Data.Foldable (Foldable (foldl'))
 import Grisette (LogicalOp (symNot, (.&&), (.||)), ToSym (toSym))
-import Grisette.Generics.BoolLike (BoolLike)
-import Grisette.Generics.Class.SEq (SEq ((.==)))
+import Grisette.Unified.BoolLike (BoolLike)
+import Grisette.Unified.Class.SEq (SEq ((.==)))
 
 symElem :: (Foldable t, BoolLike bool, SEq bool a) => a -> t a -> bool
 symElem x = symAny (.== x)

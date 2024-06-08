@@ -1,6 +1,6 @@
 {-# LANGUAGE ConstraintKinds #-}
 
-module Grisette.Generics.BaseConstraint
+module Grisette.Unified.BaseConstraint
   ( BasicGrisetteType,
     ConSymConversion,
   )
@@ -17,9 +17,9 @@ import Grisette
     ToCon,
     ToSym,
   )
-import Grisette.Generics.Class.ITEOp (ITEOp)
-import Grisette.Generics.Class.SEq (SEq)
-import Grisette.Generics.Class.SOrd (SOrd)
+import Grisette.Unified.Class.ITEOp (ITEOp)
+import Grisette.Unified.Class.SEq (SEq)
+import Grisette.Unified.Class.SOrd (SOrd)
 import Language.Haskell.TH.Syntax (Lift)
 
 type BasicGrisetteType bool t =

@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module Grisette.Generics.Class.SimpleMergeable (SimpleMergeable (..)) where
+module Grisette.Unified.Class.SimpleMergeable (SimpleMergeable (..)) where
 
 import qualified Grisette
 

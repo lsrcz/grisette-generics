@@ -1,7 +1,7 @@
 cradle:
   stack:
     - path: "./src"
-      component: "grisette-generics:lib"
+      component: "grisette-unified:lib"
 
     - path: "./test"
-      component: "grisette-generics:test:spec"
+      component: "grisette-unified:test:spec"

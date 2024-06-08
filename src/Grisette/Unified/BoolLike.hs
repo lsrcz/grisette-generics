@@ -1,17 +1,17 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE FlexibleContexts #-}
 
-module Grisette.Generics.BoolLike (BoolLike) where
+module Grisette.Unified.BoolLike (BoolLike) where
 
 import Grisette
   ( LogicalOp,
     SymBool,
   )
-import Grisette.Generics.BaseConstraint
+import Grisette.Unified.BaseConstraint
   ( BasicGrisetteType,
     ConSymConversion,
   )
-import Grisette.Generics.Class.SimpleMergeable (SimpleMergeable)
+import Grisette.Unified.Class.SimpleMergeable (SimpleMergeable)
 
 type BoolLike bool =
   ( BasicGrisetteType bool bool,

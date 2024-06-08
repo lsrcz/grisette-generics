@@ -3,7 +3,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE KindSignatures #-}
 
-module Grisette.Generics.BVLike
+module Grisette.Unified.BVLike
   ( BVLike,
     BVPair,
     SafeBVLike,
@@ -36,10 +36,10 @@ import Grisette
     SymRotate,
     SymShift,
   )
-import Grisette.Generics.BaseConstraint
+import Grisette.Unified.BaseConstraint
   ( ConSymConversion,
   )
-import Grisette.Generics.IntegralLike (NumLike, SafeIntegralLike)
+import Grisette.Unified.IntegralLike (NumLike, SafeIntegralLike)
 
 type BVLike bool bv =
   ( NumLike bool bv,
