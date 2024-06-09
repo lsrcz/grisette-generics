@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE ImpredicativeTypes #-}
+{-# LANGUAGE MonoLocalBinds #-}
 
 module Grisette.Unified.Lib.Data.Foldable
   ( symAnd,
