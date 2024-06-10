@@ -14,6 +14,8 @@ import Grisette
     ExtractSymbolics,
     GPretty,
     Mergeable,
+    SEq,
+    SOrd,
     SafeDivision,
     SafeLinearArith,
     SubstituteSym,
@@ -32,7 +34,9 @@ type BasicGrisetteType t =
     ExtractSymbolics t,
     SubstituteSym t,
     GPretty t,
-    Mergeable t
+    Mergeable t,
+    SEq t,
+    SOrd t
   )
 
 type ConSymConversion conType symType t =

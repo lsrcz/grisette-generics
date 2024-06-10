@@ -10,6 +10,8 @@
 
 module Grisette.Unified.UnifiedData (UnifiedData (..), UnifiedData0) where
 
+import Control.DeepSeq (NFData)
+import Data.Hashable (Hashable)
 import Grisette
   ( AllSyms,
     EvaluateSym,
@@ -29,11 +31,15 @@ import Grisette
   )
 import Grisette.Unified.Class.UnifiedBranching (UnifiedBranching)
 import Grisette.Unified.EvaluationMode (EvaluationMode (Con, Sym))
+import Language.Haskell.TH.Syntax (Lift)
 
 class
   ( u ~ GetData mode v,
     Mergeable u,
     (Show v) => Show u,
+    (Hashable v) => Hashable u,
+    (NFData v) => NFData u,
+    (Lift v) => Lift u,
     (AllSyms v) => AllSyms u,
     (EvaluateSym v) => EvaluateSym u,
     (ExtractSymbolics v) => ExtractSymbolics u,
