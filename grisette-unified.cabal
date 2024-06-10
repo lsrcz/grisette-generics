@@ -32,18 +32,18 @@ source-repository head
 library
   exposed-modules:
       Grisette.Unified.BaseConstraint
-      Grisette.Unified.BoolLike
-      Grisette.Unified.BVLike
-      Grisette.Unified.Class.Branching
-      Grisette.Unified.Class.ITEOp
-      Grisette.Unified.Class.SEq
-      Grisette.Unified.Class.SimpleMergeable
-      Grisette.Unified.Class.SOrd
-      Grisette.Unified.IntegerLike
-      Grisette.Unified.IntegralLike
-      Grisette.Unified.Lib.Data.Foldable
-      Grisette.Unified.SizedBVLike
+      Grisette.Unified.Class.UnifiedBranching
+      Grisette.Unified.Class.UnifiedITEOp
+      Grisette.Unified.Class.UnifiedSEq
+      Grisette.Unified.Class.UnifiedSimpleMergeable
+      Grisette.Unified.Class.UnifiedSOrd
+      Grisette.Unified.EvaluationMode
+      Grisette.Unified.IsMode
+      Grisette.Unified.UnifiedBool
+      Grisette.Unified.UnifiedBV
+      Grisette.Unified.UnifiedConstraint
       Grisette.Unified.UnifiedData
+      Grisette.Unified.UnifiedInteger
   other-modules:
       Paths_grisette_unified
   hs-source-dirs:

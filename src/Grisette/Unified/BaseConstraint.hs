@@ -3,6 +3,7 @@
 module Grisette.Unified.BaseConstraint
   ( BasicGrisetteType,
     ConSymConversion,
+    SafeIntegral,
   )
 where
 
@@ -13,16 +14,15 @@ import Grisette
     ExtractSymbolics,
     GPretty,
     Mergeable,
+    SafeDivision,
+    SafeLinearArith,
     SubstituteSym,
     ToCon,
     ToSym,
   )
-import Grisette.Unified.Class.ITEOp (ITEOp)
-import Grisette.Unified.Class.SEq (SEq)
-import Grisette.Unified.Class.SOrd (SOrd)
 import Language.Haskell.TH.Syntax (Lift)
 
-type BasicGrisetteType bool t =
+type BasicGrisetteType t =
   ( Show t,
     Eq t,
     NFData t,
@@ -32,15 +32,14 @@ type BasicGrisetteType bool t =
     ExtractSymbolics t,
     SubstituteSym t,
     GPretty t,
-    Mergeable t,
-    SEq bool t,
-    SOrd bool t,
-    ITEOp bool t
+    Mergeable t
   )
 
-type ConSymConversion conType symType bool t =
+type ConSymConversion conType symType t =
   ( ToCon t conType,
     ToSym conType t,
     ToCon symType t,
     ToSym t symType
   )
+
+type SafeIntegral e v m = (SafeDivision e v m, SafeLinearArith e v m)
