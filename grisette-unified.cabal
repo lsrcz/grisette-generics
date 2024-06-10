@@ -39,6 +39,7 @@ library
       Grisette.Unified.Class.UnifiedSOrd
       Grisette.Unified.EvaluationMode
       Grisette.Unified.IsMode
+      Grisette.Unified.Lib.Data.Foldable
       Grisette.Unified.UnifiedBool
       Grisette.Unified.UnifiedBV
       Grisette.Unified.UnifiedConstraint
