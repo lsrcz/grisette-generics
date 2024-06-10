@@ -8,6 +8,7 @@
 {-# LANGUAGE TypeFamilyDependencies #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE UndecidableSuperClasses #-}
 
 module Grisette.Unified.UnifiedBV
   ( UnifiedBV (..),
@@ -62,7 +63,7 @@ import Grisette.Unified.Class.UnifiedSimpleMergeable (UnifiedSimpleMergeable)
 import Grisette.Unified.EvaluationMode (EvaluationMode (Con, Sym))
 import Language.Haskell.TH.Syntax (Lift)
 
-type SomeBVPair word int =
+type SomeBVPair mode word int =
   ( BasicGrisetteType word,
     BasicGrisetteType int,
     Num word,
@@ -79,6 +80,12 @@ type SomeBVPair word int =
     BV int,
     ConSymConversion SomeWordN SomeSymWordN word,
     ConSymConversion SomeIntN SomeSymIntN int,
+    UnifiedSEq mode word,
+    UnifiedSEq mode int,
+    UnifiedSOrd mode word,
+    UnifiedSOrd mode int,
+    UnifiedITEOp mode word,
+    UnifiedITEOp mode int,
     SignConversion word int
   ) ::
     Constraint
@@ -131,7 +138,7 @@ class
     SizedBV wordn,
     SizedBV intn,
     forall n. (KnownNat n, 1 <= n) => SignConversion (wordn n) (intn n),
-    SomeBVPair (SomeBV wordn) (SomeBV intn),
+    SomeBVPair mode (SomeBV wordn) (SomeBV intn),
     wordn ~ GetWordN mode,
     intn ~ GetIntN mode
   ) =>
