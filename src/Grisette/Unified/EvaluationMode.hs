@@ -1,10 +1,13 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveLift #-}
 {-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE TypeFamilyDependencies #-}
 
 module Grisette.Unified.EvaluationMode (EvaluationMode (..), IsConMode) where
 
-data EvaluationMode = Con | Sym
+import Language.Haskell.TH.Syntax (Lift)
+
+data EvaluationMode = Con | Sym deriving (Lift)
 
 type family IsConMode (mode :: EvaluationMode) = (r :: Bool) | r -> mode where
   IsConMode 'Con = 'True

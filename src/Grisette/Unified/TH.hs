@@ -6,7 +6,11 @@
 {-# LANGUAGE TypeOperators #-}
 
 module Grisette.Unified.TH
-  ( deriveNewtypeWithMode,
+  ( deriveNewtype,
+    deriveAnyclass,
+    deriveStock,
+    deriveViaDefault,
+    deriveNewtypeWithMode,
     deriveAnyclassWithMode,
     deriveStockWithMode,
     deriveViaDefaultWithMode,
@@ -14,11 +18,12 @@ module Grisette.Unified.TH
 where
 
 import Data.List (singleton)
+import Data.Maybe (isJust, isNothing)
 import GHC.TypeNats (KnownNat, Nat, type (<=))
 import Grisette (Default, Mergeable)
-import Grisette.Unified.EvaluationMode (EvaluationMode)
+import Grisette.Unified.EvaluationMode (EvaluationMode (Con, Sym))
 import Grisette.Unified.IsMode (IsMode)
-import Language.Haskell.TH (Ppr (ppr))
+import Language.Haskell.TH (Ppr (ppr), Type (PromotedT))
 import Language.Haskell.TH.Syntax
   ( Dec (DataD, NewtypeD, StandaloneDerivD),
     DerivStrategy
@@ -42,8 +47,8 @@ bndrName (KindedTV n _ _) = n
 
 data Strategy = Stock | Newtype | Via | Anyclass
 
-deriveWithMode :: Strategy -> Name -> Name -> Q [Dec]
-deriveWithMode strategy name cls = do
+deriveWithMode :: Maybe EvaluationMode -> Strategy -> Name -> Name -> Q [Dec]
+deriveWithMode evmode strategy name cls = do
   d <- reify name
   case d of
     TyConI (DataD _ _ bndrs _ _ _) -> genDeriveClause bndrs
@@ -68,8 +73,21 @@ deriveWithMode strategy name cls = do
         Anyclass -> return AnyclassStrategy
     dataTypeWithTVars = dataTypeWithTVars' . reverse
     dataTypeWithTVars' [] = return $ ConT name
+    dataTypeWithTVars' (bndr : bndrs)
+      | binderIsMode bndr && isJust evmode =
+          case evmode of
+            Just Con ->
+              [t|$(dataTypeWithTVars' bndrs) $(return $ PromotedT 'Con)|]
+            Just Sym ->
+              [t|$(dataTypeWithTVars' bndrs) $(return $ PromotedT 'Sym)|]
+            Nothing -> fail "EvaluationMode is not provided"
     dataTypeWithTVars' (bndr : bndrs) =
       [t|$(dataTypeWithTVars' bndrs) $(return $ VarT (bndrName bndr))|]
+
+    binderIsMode :: TyVarBndr flag -> Bool
+    binderIsMode (KindedTV _ _ kind) = kind == ConT ''EvaluationMode
+    binderIsMode _ = False
+
     genBndrConstraint :: TyVarBndr flag -> Q [Type]
     genBndrConstraint (PlainTV n _) = do
       let tv = return $ VarT n
@@ -79,12 +97,11 @@ deriveWithMode strategy name cls = do
       let tv = return $ VarT n
       sequence [[t|$(return $ ConT cls) $tv|], [t|Mergeable $tv|]]
     genBndrConstraint (KindedTV n _ kind@(ConT nm)) = do
-      reifiedKind <- reify nm
-      mode <- reify ''EvaluationMode
-      nat <- reify ''Nat
       if
-        | reifiedKind == mode -> singleton <$> [t|(IsMode $(return $ VarT n))|]
-        | reifiedKind == nat ->
+        | nm == ''EvaluationMode && isNothing evmode ->
+            singleton <$> [t|(IsMode $(return $ VarT n))|]
+        | nm == ''EvaluationMode -> return []
+        | nm == ''Nat ->
             sequence
               [[t|KnownNat $(return $ VarT n)|], [t|1 <= $(return $ VarT n)|]]
         | otherwise ->
@@ -98,18 +115,35 @@ deriveWithMode strategy name cls = do
           <> "and EvaluationMode are supported, but got "
           <> show (ppr kind)
 
-deriveInstancesWithMode :: Strategy -> Name -> [Name] -> Q [Dec]
-deriveInstancesWithMode strategy name =
-  fmap concat <$> traverse (deriveWithMode strategy name)
+deriveInstances :: Strategy -> Name -> [Name] -> Q [Dec]
+deriveInstances strategy name =
+  fmap concat <$> traverse (deriveWithMode Nothing strategy name)
 
-deriveNewtypeWithMode :: Name -> [Name] -> Q [Dec]
+deriveInstancesWithMode ::
+  Strategy -> EvaluationMode -> Name -> [Name] -> Q [Dec]
+deriveInstancesWithMode strategy mode name =
+  fmap concat <$> traverse (deriveWithMode (Just mode) strategy name)
+
+deriveNewtype :: Name -> [Name] -> Q [Dec]
+deriveNewtype = deriveInstances Newtype
+
+deriveAnyclass :: Name -> [Name] -> Q [Dec]
+deriveAnyclass = deriveInstances Anyclass
+
+deriveStock :: Name -> [Name] -> Q [Dec]
+deriveStock = deriveInstances Stock
+
+deriveViaDefault :: Name -> [Name] -> Q [Dec]
+deriveViaDefault = deriveInstances Via
+
+deriveNewtypeWithMode :: EvaluationMode -> Name -> [Name] -> Q [Dec]
 deriveNewtypeWithMode = deriveInstancesWithMode Newtype
 
-deriveAnyclassWithMode :: Name -> [Name] -> Q [Dec]
+deriveAnyclassWithMode :: EvaluationMode -> Name -> [Name] -> Q [Dec]
 deriveAnyclassWithMode = deriveInstancesWithMode Anyclass
 
-deriveStockWithMode :: Name -> [Name] -> Q [Dec]
+deriveStockWithMode :: EvaluationMode -> Name -> [Name] -> Q [Dec]
 deriveStockWithMode = deriveInstancesWithMode Stock
 
-deriveViaDefaultWithMode :: Name -> [Name] -> Q [Dec]
+deriveViaDefaultWithMode :: EvaluationMode -> Name -> [Name] -> Q [Dec]
 deriveViaDefaultWithMode = deriveInstancesWithMode Via
