@@ -13,7 +13,7 @@ packages:
     hackage: grisette-0.5.0.1
 snapshots:
 - completed:
-    sha256: 62f2f54aac083e25613ce5aefd04b390f1e8853631b2059e31d7a039e5f50e03
-    size: 602427
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2024/2/12.yaml
-  original: nightly-2024-02-12
+    sha256: 7c064ccb3871352bd90723c7e972bd1126f20b3e1ef215c4e121e75370ca0897
+    size: 644320
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2024/6/4.yaml
+  original: nightly-2024-06-04
