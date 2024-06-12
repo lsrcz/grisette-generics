@@ -31,7 +31,8 @@ import Grisette
   )
 import Grisette.Unified.EvaluationMode (EvaluationMode (Con, Sym))
 import Grisette.Unified.TH
-  ( deriveAnyclass,
+  ( deriveAllWithDefaultStrategy,
+    deriveAnyclass,
     deriveAnyclassWithMode,
     deriveConversions,
     deriveNewtype,
@@ -66,3 +67,10 @@ newtype T1 mode = T1 (GetBool mode)
   deriving (Generic)
 
 deriveNewtype ''T1 [''Mergeable, ''SEq, ''SOrd, ''Show]
+
+data T2 mode a n
+  = T2 (GetBool mode) (GetWordN mode n) a (GetData mode (T2 mode a n))
+  | T2Nil
+  deriving (Generic)
+
+deriveAllWithDefaultStrategy ''T2

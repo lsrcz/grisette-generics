@@ -20,7 +20,7 @@ tested-with:
 
 dependencies:
   - base >= 4.16 && < 5
-  - grisette >= 0.5.0.0 && < 0.7
+  - grisette >= 0.6.1.0 && < 0.7
   - deepseq >= 1.4.4 && < 1.6
   - template-haskell >= 2.18.0 && < 2.23
   - mtl >= 2.2.2 && < 2.4

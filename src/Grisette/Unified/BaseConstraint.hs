@@ -10,7 +10,8 @@ where
 import Control.DeepSeq (NFData)
 import Data.Hashable (Hashable)
 import Grisette
-  ( EvaluateSym,
+  ( AllSyms,
+    EvaluateSym,
     ExtractSymbolics,
     GPretty,
     Mergeable,
@@ -25,18 +26,19 @@ import Grisette
 import Language.Haskell.TH.Syntax (Lift)
 
 type BasicGrisetteType t =
-  ( Show t,
+  ( AllSyms t,
     Eq t,
-    NFData t,
-    Lift t,
-    Hashable t,
     EvaluateSym t,
     ExtractSymbolics t,
-    SubstituteSym t,
     GPretty t,
+    Hashable t,
+    Lift t,
     Mergeable t,
+    NFData t,
     SEq t,
-    SOrd t
+    Show t,
+    SOrd t,
+    SubstituteSym t
   )
 
 type ConSymConversion conType symType t =

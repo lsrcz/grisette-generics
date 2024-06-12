@@ -16,14 +16,31 @@ module Grisette.Unified.TH
     deriveViaDefaultWithMode,
     deriveConversions,
     deriveConversionsWithMode,
+    deriveWithDefaultStrategy,
+    deriveAllWithDefaultStrategy,
   )
 where
 
+import Control.DeepSeq (NFData)
 import Control.Monad (when, zipWithM)
+import Data.Hashable (Hashable)
 import Data.List (singleton)
 import Data.Maybe (isJust, isNothing)
+import GHC.Generics (Generic)
 import GHC.TypeNats (KnownNat, Nat, type (<=))
-import Grisette (Default, Mergeable)
+import Grisette
+  ( AllSyms,
+    Default,
+    EvaluateSym,
+    ExtractSymbolics,
+    GPretty,
+    Mergeable,
+    SEq,
+    SOrd,
+    SubstituteSym,
+    ToCon,
+    ToSym,
+  )
 import Grisette.Unified.EvaluationMode (EvaluationMode (Con, Sym))
 import Grisette.Unified.IsMode (IsMode)
 import Language.Haskell.TH (Ppr (ppr), Quote (newName), Type (PromotedT))
@@ -37,6 +54,7 @@ import Language.Haskell.TH.Syntax
       ),
     Info (TyConI),
     Kind,
+    Lift,
     Name,
     Q,
     TyVarBndr (KindedTV, PlainTV),
@@ -231,3 +249,107 @@ deriveConversionsWithMode ::
   EvaluationMode -> Name -> Name -> [Name] -> Q [Dec]
 deriveConversionsWithMode mode from to =
   fmap concat . traverse (deriveConversionWithMode (Just mode) from to)
+
+newtypeDefaultStrategy :: Name -> Q Strategy
+newtypeDefaultStrategy nm
+  | nm == ''Generic = return Stock
+  | nm == ''Show = return Stock
+  | nm == ''Lift = return Stock
+  | otherwise = return Newtype
+
+dataDefaultStrategy :: Name -> Q Strategy
+dataDefaultStrategy nm
+  | nm == ''Generic = return Stock
+  | nm == ''Show = return Stock
+  | nm == ''Eq = return Stock
+  | nm == ''Ord = return Stock
+  | nm == ''Lift = return Stock
+  | nm == ''NFData = return Anyclass
+  | nm == ''Hashable = return Anyclass
+  | nm == ''AllSyms = return Via
+  | nm == ''EvaluateSym = return Via
+  | nm == ''ExtractSymbolics = return Via
+  | nm == ''GPretty = return Via
+  | nm == ''Mergeable = return Via
+  | nm == ''SEq = return Via
+  | nm == ''SOrd = return Via
+  | nm == ''SubstituteSym = return Via
+  | otherwise = fail $ "Unsupported class: " <> show nm
+
+validEvaluationMode :: Name -> Q (Maybe EvaluationMode)
+validEvaluationMode nm
+  | nm == ''Ord = return $ Just Con
+  | otherwise = return Nothing
+
+reifiedIsData :: Name -> Q Bool
+reifiedIsData nm = do
+  d <- reify nm
+  case d of
+    TyConI DataD {} -> return True
+    _ -> return False
+
+reifiedIsNewtype :: Name -> Q Bool
+reifiedIsNewtype nm = do
+  d <- reify nm
+  case d of
+    TyConI NewtypeD {} -> return True
+    _ -> return False
+
+deriveWithDefaultStrategy :: Name -> [Name] -> Q [Dec]
+deriveWithDefaultStrategy nm clss = do
+  isData <- reifiedIsData nm
+  isNewtype <- reifiedIsNewtype nm
+  let conversions = filter (\cls -> cls == ''ToCon || cls == ''ToSym) clss
+  let nonConversions = filter (\cls -> cls /= ''ToCon && cls /= ''ToSym) clss
+  conversionDerivation <- deriveConversionWithDefaultStrategy' nm conversions
+  nonConversionDerivation <-
+    if
+      | isData ->
+          deriveWithDefaultStrategy' dataDefaultStrategy nm nonConversions
+      | isNewtype ->
+          deriveWithDefaultStrategy' newtypeDefaultStrategy nm nonConversions
+      | otherwise ->
+          fail "Currently only non-GADTs data or newtype are supported."
+  return $ conversionDerivation <> nonConversionDerivation
+  where
+    deriveWithDefaultStrategy' ::
+      (Name -> Q Strategy) -> Name -> [Name] -> Q [Dec]
+    deriveWithDefaultStrategy' getStrategy nm clss = do
+      strategies <- traverse getStrategy clss
+      modes <- traverse validEvaluationMode clss
+      fmap concat
+        $ traverse
+          ( \(strategy, mode, cls) ->
+              deriveWithMode mode strategy nm cls
+          )
+        $ zip3 strategies modes clss
+    deriveConversionWithDefaultStrategy' :: Name -> [Name] -> Q [Dec]
+    deriveConversionWithDefaultStrategy' nm clss = do
+      modes <- traverse validEvaluationMode clss
+      concat
+        <$> zipWithM
+          (\mode -> deriveConversionWithMode mode nm nm)
+          modes
+          clss
+
+deriveAllWithDefaultStrategy :: Name -> Q [Dec]
+deriveAllWithDefaultStrategy nm = do
+  deriveWithDefaultStrategy
+    nm
+    [ ''Show,
+      ''Eq,
+      ''Ord,
+      ''Lift,
+      ''NFData,
+      ''Hashable,
+      ''AllSyms,
+      ''EvaluateSym,
+      ''ExtractSymbolics,
+      ''GPretty,
+      ''Mergeable,
+      ''SEq,
+      ''SOrd,
+      ''SubstituteSym,
+      ''ToCon,
+      ''ToSym
+    ]
