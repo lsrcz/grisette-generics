@@ -16,8 +16,9 @@ module Grisette.Unified.TH
     deriveViaDefaultWithMode,
     deriveConversions,
     deriveConversionsWithMode,
-    deriveWithDefaultStrategy,
-    deriveAllWithDefaultStrategy,
+    deriveGrisette,
+    deriveAllGrisette,
+    deriveAllGrisetteExcept,
   )
 where
 
@@ -296,8 +297,8 @@ reifiedIsNewtype nm = do
     TyConI NewtypeD {} -> return True
     _ -> return False
 
-deriveWithDefaultStrategy :: Name -> [Name] -> Q [Dec]
-deriveWithDefaultStrategy nm clss = do
+deriveGrisette :: Name -> [Name] -> Q [Dec]
+deriveGrisette nm clss = do
   isData <- reifiedIsData nm
   isNewtype <- reifiedIsNewtype nm
   let conversions = filter (\cls -> cls == ''ToCon || cls == ''ToSym) clss
@@ -333,24 +334,29 @@ deriveWithDefaultStrategy nm clss = do
           modes
           clss
 
-deriveAllWithDefaultStrategy :: Name -> Q [Dec]
-deriveAllWithDefaultStrategy nm = do
-  deriveWithDefaultStrategy
-    nm
-    [ ''Show,
-      ''Eq,
-      ''Ord,
-      ''Lift,
-      ''NFData,
-      ''Hashable,
-      ''AllSyms,
-      ''EvaluateSym,
-      ''ExtractSymbolics,
-      ''GPretty,
-      ''Mergeable,
-      ''SEq,
-      ''SOrd,
-      ''SubstituteSym,
-      ''ToCon,
-      ''ToSym
-    ]
+allGrisette :: [Name]
+allGrisette =
+  [ ''Show,
+    ''Eq,
+    ''Ord,
+    ''Lift,
+    ''NFData,
+    ''Hashable,
+    ''AllSyms,
+    ''EvaluateSym,
+    ''ExtractSymbolics,
+    ''GPretty,
+    ''Mergeable,
+    ''SEq,
+    ''SOrd,
+    ''SubstituteSym,
+    ''ToCon,
+    ''ToSym
+  ]
+
+deriveAllGrisette :: Name -> Q [Dec]
+deriveAllGrisette nm = deriveGrisette nm allGrisette
+
+deriveAllGrisetteExcept :: Name -> [Name] -> Q [Dec]
+deriveAllGrisetteExcept nm clss = do
+  deriveGrisette nm $ filter (`notElem` clss) allGrisette
