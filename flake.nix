@@ -8,7 +8,7 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
-        hPkgs = pkgs.haskell.packages."ghc9101";
+        hPkgs = pkgs.haskell.packages."ghc965";
         stableHPkgs = pkgs.haskell.packages."ghc982";
 
         myDevTools = [
