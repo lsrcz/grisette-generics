@@ -1,0 +1,6 @@
+packages: grisette-unified.cabal
+
+source-repository-package
+  type: git
+  location: https://github.com/lsrcz/grisette.git
+  tag: 4c027bf27f36cd57c9000956cc0ab2a3531127cc

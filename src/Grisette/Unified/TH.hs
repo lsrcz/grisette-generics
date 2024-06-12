@@ -110,7 +110,8 @@ stripBinderInfo (PlainTV n _) = PlainTV n ()
 stripBinderInfo (KindedTV n _ kind) = KindedTV n () kind
 
 getBinders :: Info -> Q [TyVarBndr ()]
-getBinders (TyConI (DataD _ _ bndrs _ _ _)) = traverse bndrFresh bndrs
+getBinders (TyConI (DataD _ _ bndrs _ _ _)) =
+  traverse (bndrFresh . stripBinderInfo) bndrs
 getBinders (TyConI (NewtypeD _ _ bndrs _ _ _)) =
   traverse (bndrFresh . stripBinderInfo) bndrs
 getBinders _ =
