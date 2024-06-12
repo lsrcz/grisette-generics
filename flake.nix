@@ -14,9 +14,9 @@
         myDevTools = [
           hPkgs.ghc # GHC compiler in the desired version (will be available on PATH)
           # hPkgs.ghcid # Continuous terminal Haskell compile checker
-          # hPkgs.ormolu # Haskell formatter
-          # hPkgs.hlint # Haskell codestyle checker
-          # hPkgs.haskell-language-server # LSP server for editor
+          hPkgs.ormolu # Haskell formatter
+          hPkgs.hlint # Haskell codestyle checker
+          hPkgs.haskell-language-server # LSP server for editor
           stableHPkgs.cabal-install
           stack-wrapped
           pkgs.zlib # External C library needed by some Haskell packages
